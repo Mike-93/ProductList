@@ -41,7 +41,7 @@ public class ProductListService {
             for (Product p : products) {
                 cal += p.getKcal();
             }
-            productList.setTotalCost(cal);
+            productList.setTotalKcal(cal);
             productList.setProductList(products);
             productListRepository.save(productList);
             return true;
