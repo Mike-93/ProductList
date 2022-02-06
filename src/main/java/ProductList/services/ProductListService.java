@@ -19,9 +19,9 @@ public class ProductListService {
         List<ProductList> lists = productListRepository.findAll();
         ProductList newProductList = new ProductList();
         if (lists.isEmpty()) {
-            productList.setId(1);
+            newProductList.setId(1);
         } else {
-            productList.setId(lists.size() + 1);
+            newProductList.setId(lists.size() + 1);
         }
         newProductList.setName(productList.getName());
         productListRepository.save(newProductList);
@@ -29,14 +29,19 @@ public class ProductListService {
 
     public boolean addProductToProductList(int productListId, Product product) {
         ProductList productList = productListRepository.findById(productListId);
+        int cal = 0;
         if (productList != null) {
             List<Product> products;
-            if (productList.getProductList().isEmpty()) {
+            if (productList.getProductList() == null) {
                 products = new ArrayList<>();
             } else {
                 products = productList.getProductList();
             }
             products.add(product);
+            for (Product p : products) {
+                cal += p.getKcal();
+            }
+            productList.setTotalCost(cal);
             productList.setProductList(products);
             productListRepository.save(productList);
             return true;
